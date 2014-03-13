@@ -5,14 +5,17 @@ localLines = []
 START_LOCAL_DELIMETER = "<!--:START-LOCAL:-->"
 END_LOCAL_DELIMETER = "<!--:END-LOCAL:-->"
 
-START_PROD_DELIMETER = "<!--:START-PROD::"
-END_PROD_DELIMETER = "::END-LOCAL::-->"
+START_PROD_DELIMETER =  "<!--::START-PROD::"
+END_PROD_DELIMETER = "::END-PROD::-->"
 
 
 IS_LOCAL = False
 IS_PROD = False
 
 def readFile():
+    global IS_LOCAL
+    global IS_PROD
+
     lines = open( "index.html", "r" )
     array = []
     for line in lines:
@@ -21,32 +24,32 @@ def readFile():
         # so the lines in between can show
         if line.find(START_PROD_DELIMETER) >=0:
             IS_PROD = True
-            next(lines)
+            line = next(lines)
+
 
         if line.find(END_PROD_DELIMETER) >=0:
             IS_PROD = False
-            next(lines)
+            line = next(lines)
 
         # Next we make sure to now ignore all the local script tags
         if line.find(START_LOCAL_DELIMETER) >=0:
             IS_LOCAL = True
-            next(lines)
 
         if line.find(END_LOCAL_DELIMETER) >=0:
             IS_LOCAL = False
-            next(lines)
+            line = ""
 
-        if not IS_LOCAL:
-            newLines.append( line )
-        else:
+        if IS_LOCAL:
             localLines.append( line )
+        else:
+            newLines.append( line )
 
 
 
 import pprint
 
 readFile()
-pprint.pprint(savedProdLines)
+pprint.pprint(newLines)
 
 
 
