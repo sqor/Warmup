@@ -10,11 +10,9 @@ END_PROD_DELIMETER = "::END-PROD::-->"
 
 
 IS_LOCAL = False
-IS_PROD = False
 
 def readFile():
     global IS_LOCAL
-    global IS_PROD
 
     lines = open( "index.html", "r" )
     array = []
@@ -23,12 +21,9 @@ def readFile():
         # First we make sure to remove the old prod comments
         # so the lines in between can show
         if line.find(START_PROD_DELIMETER) >=0:
-            IS_PROD = True
             line = next(lines)
 
-
         if line.find(END_PROD_DELIMETER) >=0:
-            IS_PROD = False
             line = next(lines)
 
         # Next we make sure to now ignore all the local script tags
@@ -46,11 +41,13 @@ def readFile():
 
 
 
-import pprint
-
+# Read file and parse
 readFile()
-pprint.pprint(newLines)
-
+# Write File
+f = open('index2.html','w')
+for line in newLines:
+    f.write(line)
+f.close()
 
 
 
