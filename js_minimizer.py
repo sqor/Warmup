@@ -1,6 +1,9 @@
+#!/usr/bin/python
+'''
+Condenses near-by javascript tags into one javascript tag.
+'''
 import bs4
 
-scriptSources = []
 newLines = []
 
 SCRIPT_TAG_DELIMETER = "<script"
@@ -12,10 +15,10 @@ def get_script_src(line):
     src = None
     if line.find(SCRIPT_TAG_DELIMETER) >=0:
         soup = bs4.BeautifulSoup(line)
-        if soup.script != None:
+        if soup.script is not None:
             srcRaw = soup.script.get('src')
             # We want to ignore remote files
-            if srcRaw:
+            if srcRaw is not None:
                 if srcRaw.find("http") == -1:
                     src = srcRaw
 
@@ -27,7 +30,7 @@ def write_file():
     return "<script src='%s'></script>\n" % (src)
 
 def read_file():
-    global scriptSources
+    scriptSources = []
     SCRIPT_BLOCK = False
     lines = open( "index.html", "r" )
     array = []
@@ -47,13 +50,15 @@ def read_file():
         if not SCRIPT_BLOCK:
             newLines.append(line)
 
-# Read file and parse
-read_file()
-# Write File
-f = open('index3.html','w')
-for line in newLines:
-    f.write(line)
-f.close()
+def main():
+    # Read file and parse
+    read_file()
+    # Write File
+    f = open('index3.html','w')
+    for line in newLines:
+        f.write(line)
+    f.close()
 
 
-
+if __name__  == '__main__':
+    main()
