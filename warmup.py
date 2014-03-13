@@ -1,5 +1,4 @@
-
-savedProdLines = []
+newLines = []
 localLines = []
 
 START_LOCAL_DELIMETER = "<!--:START-LOCAL:-->"
@@ -9,10 +8,9 @@ START_PROD_DELIMETER =  "<!--::START-PROD::"
 END_PROD_DELIMETER = "::END-PROD::-->"
 
 
-IS_LOCAL = False
 
 def readFile():
-    global IS_LOCAL
+    IS_LOCAL = False
 
     lines = open( "index.html", "r" )
     array = []
