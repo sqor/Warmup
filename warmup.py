@@ -9,7 +9,7 @@ END_PROD_DELIMETER = "::END-PROD::-->"
 
 
 
-def readFile():
+def read_file():
     IS_LOCAL = False
 
     lines = open( "index.html", "r" )
@@ -38,7 +38,7 @@ def readFile():
             newLines.append( line )
 
 # Read file and parse
-readFile()
+read_file()
 # Write File
 f = open('index2.html','w')
 for line in newLines:
