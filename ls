@@ -1,4 +1,4 @@
-
+newLines= []
 savedProdLines = []
 localLines = []
 
@@ -38,6 +38,8 @@ def readFile():
             localLines.append( line )
         else:
             newLines.append( line )
+
+
 
 # Read file and parse
 readFile()
