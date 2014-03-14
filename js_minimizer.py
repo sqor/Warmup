@@ -78,7 +78,7 @@ def minimize_file_srcs(input_file):
 
 def main():
     # Read file and parse
-    new_lines = minimize_file_srcs('')
+    new_lines = minimize_file_srcs('index.html')
     # Write File
     f = open('index3.html','w')
     for line in new_lines:
