@@ -3,59 +3,85 @@
 Condenses near-by javascript tags into one javascript tag.
 '''
 import bs4
-
-newLines = []
+import tempfile
 
 SCRIPT_TAG_DELIMETER = "<script"
 SRC_DELIMETER = "src="
 
 SCRIPT_TAG_DELIMETER = "<script"
 
+def is_url(src_raw):
+
+    if src_raw.find("http") == -1:
+        return src_raw
+
 def get_script_src(line):
-    src = None
-    if line.find(SCRIPT_TAG_DELIMETER) >=0:
-        soup = bs4.BeautifulSoup(line)
-        if soup.script is not None:
-            srcRaw = soup.script.get('src')
-            # We want to ignore remote files
-            if srcRaw is not None:
-                if srcRaw.find("http") == -1:
-                    src = srcRaw
+    '''
+    Get src from script tag. If none found, return None.
 
-    return src
+    @arg line str
+        Line to retrieve SRC (<script src='SRC'...) from.
 
+    @return str
+        src from script tag if found. otherwise return None.
+    '''
+    # does <script exist in line?
+    soup = bs4.BeautifulSoup(line)
 
-def write_file():
-    src = "google.com"
-    return "<script src='%s'></script>\n" % (src)
+    # does script tag exist in line?
+    if soup.script is None:
+        return None
 
-def read_file():
-    scriptSources = []
-    SCRIPT_BLOCK = False
-    lines = open( "index.html", "r" )
-    array = []
+    # does src attribute exist in script tag?
+    return soup.script.get('src')
+
+def generate_combined_src_file(srcs):
+    ''''''
+    # given srcs
+    # get contents of each src file
+    # write those contents to a new file
+    # new file filename is randomly generated.
+    tempfile.mkstemp(prefix='compiled_', suffix='.js')
+
+def combine_src_strings(srcs):
+    # create js file
+    #   contents of file are contents of each src file
+    return "<script src='%s'></script>\n" % ('goog.com')
+
+def minimize_file_srcs(input_file):
+    lines = open(input_file, "r")
+
+    new_lines = []
+    script_sources = []
     for line in lines:
         src = get_script_src(line)
+
+        # if we're entering a script-src block, append script src to sources
+        # list.
         if src:
-            SCRIPT_BLOCK = True
-            scriptSources.append(src)
+            script_sources.append(src)
+
+        # if we are not in a script block, add text to new_lines list.
         else:
-            SCRIPT_BLOCK = False
-        if len(scriptSources)> 0  and not SCRIPT_BLOCK:
-            # Write out our compiled css
-            new_script_tag = write_file()
-            scriptSources = []
-            newLines.append(new_script_tag)
-        # Write the line out
-        if not SCRIPT_BLOCK:
-            newLines.append(line)
+            # if we left a script block, combine script src's into a js file
+            # and append script tag as a script src=js tag.
+            if script_sources:
+                # Write out our compiled css
+                new_lines.append(combine_src_files(script_sources))
+                script_sources = []
+
+            new_lines.append(line)
+
+    #@TODO: apply the lines that may still exist in script_sources.
+
+    return new_lines
 
 def main():
     # Read file and parse
-    read_file()
+    new_lines = minimize_file_srcs('')
     # Write File
     f = open('index3.html','w')
-    for line in newLines:
+    for line in new_lines:
         f.write(line)
     f.close()
 
