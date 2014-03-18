@@ -13,7 +13,8 @@ def get_rand_str():
 def read_file():
     IS_LOCAL = False
 
-    lines = open( "index2.html", "r" )
+
+    lines = open( "index_pre_prodified.html", "r" )
     array = []
 
     rand_ = get_rand_str()
