@@ -1,7 +1,7 @@
 newLines = []
 localLines = []
 
-START_LOCAL_DELIMETER = "<!--:START-LOCAL:-->"
+START_JS_CACHE = "<!--CACHE-BUSTAH-JS-START-->"
 END_LOCAL_DELIMETER = "<!--:END-LOCAL:-->"
 
 START_PROD_DELIMETER =  "<!--::START-PROD::"
